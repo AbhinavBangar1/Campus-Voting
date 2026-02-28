@@ -14,11 +14,11 @@ export default function ConnectPanel() {
           <p className="connect-subtitle">Decentralized Election Terminal</p>
           <div className="connect-divider" />
           <p className="connect-info">
-            Connects to your local Hardhat node at{' '}
+            Connects  local Hardhat node at{' '}
             <code>127.0.0.1:8545</code>
           </p>
           <button className="btn-primary btn-large" onClick={connect} disabled={loading}>
-            {loading ? 'Connecting…' : 'Connect to Node'}
+            {loading ? 'Connectin' : 'Connect to Node'}
           </button>
           <p className="connect-hint">Make sure <code>npx hardhat node</code> is running</p>
         </div>

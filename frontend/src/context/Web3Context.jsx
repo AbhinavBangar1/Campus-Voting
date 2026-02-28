@@ -5,7 +5,7 @@ import CampusVotingABI from '../abi/CampusVoting.json'
 const HARDHAT_RPC = 'http://127.0.0.1:8545'
 const CONTRACT_ADDRESS = import.meta.env.VITE_CONTRACT_ADDRESS || '0x5FbDB2315678afecb367f032d93F642f64180aa3'
 
-// ── localStorage helpers ─────────────────────────────────────────────
+
 const lsGet = (key, fb) => { try { const v = localStorage.getItem(key); return v ? JSON.parse(v) : fb } catch { return fb } }
 const lsSet = (key, val) => { try { localStorage.setItem(key, JSON.stringify(val)) } catch {} }
 const voterKey = (eid) => `cv_voters_${eid}`
@@ -16,7 +16,6 @@ const Web3Context = createContext(null)
 export function Web3Provider({ children }) {
   const [provider, setProvider]               = useState(null)
   const [contract, setContract]               = useState(null)
-  // admin contract instance — always signed by admin (account #0)
   const [adminContract, setAdminContract]     = useState(null)
   const [accounts, setAccounts]               = useState([])
   const [selectedAccount, setSelectedAccount] = useState('')
@@ -32,7 +31,6 @@ export function Web3Provider({ children }) {
 
   const notify = (msg) => { setTxMsg(msg); setTimeout(() => setTxMsg(''), 6000) }
 
-  // ── Connect ──────────────────────────────────────────────────────────
   const connect = useCallback(async () => {
     try {
       setLoading(true)
@@ -61,8 +59,7 @@ export function Web3Provider({ children }) {
     const isAdm = admin.toLowerCase() === address.toLowerCase()
     setIsAdmin(isAdm)
 
-    // Always keep an admin-signed contract instance available for vote submission
-    // Account #0 is always the admin/deployer on Hardhat
+
     const adminSigner = await provider.getSigner(admin)
     const adminC = new ethers.Contract(CONTRACT_ADDRESS, CampusVotingABI, adminSigner)
     setAdminContract(adminC)
@@ -70,7 +67,6 @@ export function Web3Provider({ children }) {
     await _refreshState(c, adminC)
   }, [provider])
 
-  // ── Refresh state ────────────────────────────────────────────────────
   const _refreshState = useCallback(async (c, adminC) => {
     const inst = c || contract
     if (!inst) return
@@ -109,17 +105,17 @@ export function Web3Provider({ children }) {
 
   const refreshElectionState = useCallback(() => _refreshState(), [_refreshState])
 
-  // ── Election management ──────────────────────────────────────────────
+
   const startNewElection = useCallback(async (startTs, endTs) => {
     if (!contract) return
     setLoading(true)
     try {
       const tx = await contract.startNewElection(startTs, endTs)
-      notify('⏳ Starting election…')
+      notify('Starting election…')
       await tx.wait()
-      notify('✅ New election started!')
+      notify('New election started!')
       await _refreshState()
-    } catch (e) { notify(`❌ ${e.reason || e.message}`) }
+    } catch (e) { notify(`${e.reason || e.message}`) }
     finally { setLoading(false) }
   }, [contract, _refreshState])
 
@@ -128,11 +124,11 @@ export function Web3Provider({ children }) {
     setLoading(true)
     try {
       const tx = await contract.stopElection()
-      notify('⏳ Stopping election…')
+      notify('Stopping election…')
       await tx.wait()
-      notify('✅ Election stopped.')
+      notify('Election stopped.')
       await _refreshState()
-    } catch (e) { notify(`❌ ${e.reason || e.message}`) }
+    } catch (e) { notify(`${e.reason || e.message}`) }
     finally { setLoading(false) }
   }, [contract, _refreshState])
 
@@ -141,15 +137,15 @@ export function Web3Provider({ children }) {
     setLoading(true)
     try {
       const tx = await contract.addPost(name, candidateCount)
-      notify('⏳ Adding post…')
+      notify('Adding post…')
       await tx.wait()
-      notify(`✅ Post "${name}" added!`)
+      notify(`Post "${name}" added!`)
       await _refreshState()
-    } catch (e) { notify(`❌ ${e.reason || e.message}`) }
+    } catch (e) { notify(`${e.reason || e.message}`) }
     finally { setLoading(false) }
   }, [contract, _refreshState])
 
-  // ── Voter registry ───────────────────────────────────────────────────
+
   const addVoter = useCallback((voter) => {
     if (!electionState) return
     setEligibleVoters(prev => {
@@ -178,10 +174,10 @@ export function Web3Provider({ children }) {
       lsSet(voterKey(electionState.electionId), next)
       return next
     })
-    notify('✅ Voters imported.')
+    notify('Voters imported.')
   }, [electionState])
 
-  // ── Check if voter already voted on-chain ────────────────────────────
+
   const checkVoterStatus = useCallback(async (voterId) => {
     const inst = contract
     if (!inst || !electionState) return false
@@ -191,11 +187,7 @@ export function Web3Provider({ children }) {
     return await inst.hasVoted(electionState.electionId, voterHash)
   }, [contract, electionState])
 
-  // ── Enqueue a ballot ─────────────────────────────────────────────────
-  // Called by BOTH admin (on behalf of registry voter) and non-admin (self)
-  // voterId: string identifier (wallet address for non-admin, registry ID for admin flow)
-  // voterName: display name
-  // candidateIds: array indexed by postId
+
   const enqueueBallot = useCallback(async (voterId, voterName, candidateIds) => {
     if (!electionState) return false
 
@@ -206,14 +198,13 @@ export function Web3Provider({ children }) {
     )
     try {
       const alreadyVoted = await inst.hasVoted(electionState.electionId, voterHash)
-      if (alreadyVoted) { notify('⚠ This voter has already voted on-chain.'); return false }
-    } catch (e) { /* view call failed, proceed */ }
+      if (alreadyVoted) { notify('This voter has already voted on-chain.'); return false }
+    } catch (e) {  }
 
-    // Check local queue duplicate
     const existingInQueue = ballotQueue.find(
       b => b.voterId === voterId && b.status !== 'error'
     )
-    if (existingInQueue) { notify('⚠ This voter already has a pending ballot in the queue.'); return false }
+    if (existingInQueue) { notify('This voter already has a pending ballot in the queue.'); return false }
 
     const ballot = {
       id: Date.now(),
@@ -228,7 +219,6 @@ export function Web3Provider({ children }) {
     setBallotQueue(nextQueue)
     lsSet(queueKey(electionState.electionId), nextQueue)
 
-    // Mark voter as queued in registry (if they're in it)
     setEligibleVoters(prev => {
       const next = prev.map(v => v.id === voterId ? { ...v, queued: true } : v)
       lsSet(voterKey(electionState.electionId), next)
@@ -236,19 +226,18 @@ export function Web3Provider({ children }) {
     })
 
     if (autoSubmit) {
-      // Submit immediately using admin contract
+
       await _submitBallot(ballot, nextQueue)
     } else {
-      notify('✅ Ballot queued — admin will submit from the Queue tab.')
+      notify('Ballot queued — admin will submit from the Queue tab.')
     }
     return true
   }, [contract, electionState, ballotQueue, autoSubmit])
 
-  // ── Internal: submit a single ballot on-chain using ADMIN signer ─────
   const _submitBallot = useCallback(async (ballot, currentQueue) => {
-    // CRITICAL: must use adminContract — only admin can call vote()
+
     const inst = adminContract
-    if (!inst) { notify('❌ Admin contract not available. Are you connected as admin?'); return }
+    if (!inst) { notify(' Admin contract not available. Are you connected as admin?'); return }
 
     const voterHash = ethers.solidityPackedKeccak256(
       ['string', 'uint256'], [ballot.voterId, electionState.electionId]
@@ -277,10 +266,10 @@ export function Web3Provider({ children }) {
       await tx.wait()
       updateQueue('submitted')
       markVoterVoted()
-      notify(`✅ ${ballot.voterName}'s ballot confirmed on-chain!`)
+      notify(`${ballot.voterName}'s ballot confirmed on-chain!`)
     } catch (e) {
       updateQueue('error', e.reason || e.message)
-      notify(`❌ ${e.reason || e.message}`)
+      notify(`${e.reason || e.message}`)
     }
   }, [adminContract, electionState])
 
@@ -318,7 +307,7 @@ export function Web3Provider({ children }) {
     })
   }, [electionState])
 
-  // ── Results ──────────────────────────────────────────────────────────
+
   const getResults = useCallback(async () => {
     if (!contract || !electionState) return []
     const results = []

@@ -48,12 +48,9 @@ export default function VoterRegistry() {
   return (
     <div className="panel">
       <div className="panel-header">
-        <span className="panel-icon">👥</span>
         <h2>Voter Registry</h2>
         <span className="stat-chip">{total} registered</span>
       </div>
-
-      {/* Stats bar */}
       {total > 0 && (
         <div className="voter-stats">
           <div className="voter-stat">
@@ -108,7 +105,7 @@ export default function VoterRegistry() {
           <div className="import-row">
             <span className="form-hint">Or bulk import from CSV (id, name per line):</span>
             <button className="btn-ghost sm" onClick={() => fileRef.current?.click()}>
-              📂 Import CSV
+              Import CSV
             </button>
             <input ref={fileRef} type="file" accept=".csv,.txt" onChange={handleCSV} style={{ display: 'none' }} />
           </div>
@@ -130,7 +127,6 @@ export default function VoterRegistry() {
         </div>
       )}
 
-      {/* Voter list */}
       {total === 0 ? (
         <div className="status-card center">
           <p className="muted">No voters registered yet.</p>

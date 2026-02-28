@@ -52,7 +52,7 @@ export default function TopBar({ activeTab, setActiveTab }) {
       </header>
 
       {txMsg && (
-        <div className={`tx-toast ${txMsg.startsWith('❌') ? 'err' : txMsg.startsWith('⚠') ? 'warn' : 'ok'}`}>
+        <div className={`tx-toast ${txMsg.startsWith('X') ? 'err' : txMsg.startsWith('!!') ? 'warn' : 'ok'}`}>
           {txMsg}
         </div>
       )}

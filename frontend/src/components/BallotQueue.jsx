@@ -19,7 +19,6 @@ export default function BallotQueue() {
   return (
     <div className="panel">
       <div className="panel-header">
-        <span className="panel-icon">📋</span>
         <h2>Ballot Queue</h2>
         {pending.length > 0 && (
           <span className="stat-chip warn">{pending.length} pending</span>
@@ -57,7 +56,7 @@ export default function BallotQueue() {
               disabled={loading}
               style={{ marginTop: '1rem' }}
             >
-              {loading ? 'Submitting…' : `⬡ Submit All ${pending.length} Pending`}
+              {loading ? 'Submitting…' : `Submit All ${pending.length} Pending`}
             </button>
           )}
         </div>
@@ -87,13 +86,11 @@ export default function BallotQueue() {
         </div>
       )}
 
-      {/* Ballot list */}
       {ballotQueue.length > 0 && (
         <div className="queue-list">
           {ballotQueue.map(b => (
             <div className={`queue-item ${b.status}`} key={b.id}>
 
-              {/* Header — uses b.voterName / b.voterId (new structure) */}
               <div className="queue-item-header">
                 <div className="queue-voter-info">
                   <span className="queue-voter-name">
@@ -113,7 +110,6 @@ export default function BallotQueue() {
                 </div>
               </div>
 
-              {/* Selections — guarded fully so missing posts never crash */}
               {Array.isArray(es?.posts) && Array.isArray(b.candidateIds) && (
                 <div className="queue-selections">
                   {es.posts.map((post, i) => {
@@ -131,12 +127,10 @@ export default function BallotQueue() {
                 </div>
               )}
 
-              {/* Error message */}
               {b.status === 'error' && b.errMsg && (
                 <div className="queue-error">{b.errMsg}</div>
               )}
 
-              {/* Actions */}
               {isAdmin && b.status !== 'submitted' && (
                 <div className="queue-actions">
                   {(b.status === 'pending' && !autoSubmit) && (
@@ -145,7 +139,7 @@ export default function BallotQueue() {
                       onClick={() => submitBallot(b.id)}
                       disabled={loading}
                     >
-                      ⬡ Submit
+                      Submit
                     </button>
                   )}
                   {b.status === 'error' && (

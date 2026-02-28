@@ -1,6 +1,4 @@
-/* ─── Reset & Base ──────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
 :root {
   --bg:        #080c12;
   --surface:   #0e1520;
@@ -40,7 +38,7 @@ body {
 
 input, button, select { font-family: var(--font-mono); }
 
-/* ─── Connect Screen ─────────────────────────────────── */
+
 .connect-screen {
   display: flex;
   align-items: center;
@@ -178,7 +176,6 @@ input, button, select { font-family: var(--font-mono); }
   white-space: nowrap;
 }
 
-/* ─── Top Bar ────────────────────────────────────────── */
 .topbar {
   position: sticky;
   top: 0;
@@ -301,7 +298,7 @@ input, button, select { font-family: var(--font-mono); }
   background: rgba(240,165,0,0.08);
 }
 
-/* ─── Toast ──────────────────────────────────────────── */
+
 .tx-toast {
   position: fixed;
   bottom: 1.5rem;
@@ -320,7 +317,7 @@ input, button, select { font-family: var(--font-mono); }
 .tx-toast.err { border-color: var(--danger);  color: var(--danger);  }
 .tx-toast.warn{ border-color: var(--accent2); color: var(--accent2); }
 
-/* ─── Main Layout ────────────────────────────────────── */
+
 .app { min-height: 100vh; display: flex; flex-direction: column; }
 
 .main-content {
@@ -349,7 +346,6 @@ input, button, select { font-family: var(--font-mono); }
 
 .content-grid { display: flex; flex-direction: column; gap: 1.5rem; }
 
-/* ─── Panel ──────────────────────────────────────────── */
 .panel {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -382,7 +378,7 @@ input, button, select { font-family: var(--font-mono); }
   animation: blink 1.5s ease infinite;
 }
 
-/* ─── Status Card ────────────────────────────────────── */
+
 .status-card {
   padding: 1.5rem;
   border-bottom: 1px solid var(--border);
@@ -416,7 +412,7 @@ input, button, select { font-family: var(--font-mono); }
 .status-badge.ended   { color: var(--ended);   background: rgba(94,122,154,0.1); border: 1px solid rgba(94,122,154,0.3);}
 .status-badge.pending { color: var(--pending); background: rgba(240,165,0,0.1);  border: 1px solid rgba(240,165,0,0.3); }
 
-/* ─── Form Card ──────────────────────────────────────── */
+
 .form-card {
   padding: 1.5rem;
   border-bottom: 1px solid var(--border);
@@ -514,7 +510,7 @@ input, button, select { font-family: var(--font-mono); }
 .post-name { flex: 1; color: var(--text); }
 .post-candidates { color: var(--accent); font-size: 0.75rem; }
 
-/* ─── Buttons ────────────────────────────────────────── */
+
 .btn-primary, .btn-secondary, .btn-ghost, .btn-danger {
   display: inline-block;
   padding: 0.65rem 1.5rem;
@@ -567,7 +563,7 @@ input, button, select { font-family: var(--font-mono); }
 
 button:disabled { opacity: 0.45; cursor: not-allowed; }
 
-/* ─── Ballot ─────────────────────────────────────────── */
+
 .ballot-header {
   display: flex;
   align-items: baseline;
@@ -636,7 +632,7 @@ button:disabled { opacity: 0.45; cursor: not-allowed; }
   border-top: 1px solid var(--border);
 }
 
-/* ─── Confirm / Review ───────────────────────────────── */
+
 .review-list { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.25rem; }
 
 .review-row {
@@ -653,7 +649,7 @@ button:disabled { opacity: 0.45; cursor: not-allowed; }
 .review-choice { color: var(--accent); font-weight: 500; }
 .review-choice.accent { color: var(--accent); }
 
-/* ─── Success Card ───────────────────────────────────── */
+
 .success-card {
   padding: 3rem 2rem;
   text-align: center;
@@ -685,7 +681,7 @@ button:disabled { opacity: 0.45; cursor: not-allowed; }
   margin-bottom: 1.5rem;
 }
 
-/* ─── Results ────────────────────────────────────────── */
+
 .result-card {
   border: 1px solid var(--border);
   margin-bottom: 1rem;
@@ -758,11 +754,11 @@ button:disabled { opacity: 0.45; cursor: not-allowed; }
 .result-row.winner .result-candidate { color: #fff; }
 .result-row.winner .result-pct { color: var(--accent); }
 
-/* ─── Misc ───────────────────────────────────────────── */
+
 .muted { color: var(--text-muted); font-size: 0.85rem; }
 .accent { color: var(--accent); }
 
-/* ─── Animations ─────────────────────────────────────── */
+
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(16px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -783,8 +779,6 @@ button:disabled { opacity: 0.45; cursor: not-allowed; }
   to   { opacity: 1; transform: translateX(0); }
 }
 
-/* ─── Responsive ─────────────────────────────────────── */
-/* ─── Sub-tabs ───────────────────────────────────────── */
 .sub-tabs {
   display: flex;
   border-bottom: 1px solid var(--border);
@@ -818,7 +812,6 @@ button:disabled { opacity: 0.45; cursor: not-allowed; }
   border-radius: 2px;
 }
 
-/* ─── Tab badge ──────────────────────────────────────── */
 .tab-badge {
   display: inline-block;
   background: var(--accent2);
@@ -831,7 +824,6 @@ button:disabled { opacity: 0.45; cursor: not-allowed; }
   vertical-align: middle;
 }
 
-/* ─── Step bar ───────────────────────────────────────── */
 .step-bar {
   display: flex;
   align-items: center;
@@ -865,7 +857,6 @@ button:disabled { opacity: 0.45; cursor: not-allowed; }
 
 .step-sep { color: var(--border2); margin: 0 0.25rem; }
 
-/* ─── Voter pick list ────────────────────────────────── */
 .voter-pick-list {
   display: flex;
   flex-direction: column;
@@ -903,7 +894,6 @@ button:disabled { opacity: 0.45; cursor: not-allowed; }
 .voter-pick-id   { font-size: 0.72rem; color: var(--text-muted); }
 .voter-pick-arrow { color: var(--accent); font-size: 1rem; }
 
-/* ─── Ballot voter chip ──────────────────────────────── */
 .ballot-voter-chip {
   display: flex;
   align-items: center;
@@ -972,7 +962,6 @@ button:disabled { opacity: 0.45; cursor: not-allowed; }
   margin-left: 0.25rem;
 }
 
-/* ─── Voter Registry ─────────────────────────────────── */
 .stat-chip {
   font-size: 0.72rem;
   color: var(--text-muted);
@@ -1096,7 +1085,7 @@ button:disabled { opacity: 0.45; cursor: not-allowed; }
 
 .voter-remove:hover { background: rgba(255,68,102,0.1); }
 
-/* ─── Candidate preview ──────────────────────────────── */
+
 .candidate-preview {
   display: flex;
   flex-direction: column;
@@ -1118,12 +1107,12 @@ button:disabled { opacity: 0.45; cursor: not-allowed; }
 .candidate-num { color: var(--accent); min-width: 24px; }
 .candidate-preview-label { color: var(--text-muted); }
 
-/* ─── Danger zone ────────────────────────────────────── */
+
 .danger-zone {
   border-left: 3px solid var(--danger) !important;
 }
 
-/* ─── Ballot Queue ───────────────────────────────────── */
+
 .queue-mode-row { display: flex; flex-direction: column; gap: 0.5rem; }
 
 .mode-toggle-group {

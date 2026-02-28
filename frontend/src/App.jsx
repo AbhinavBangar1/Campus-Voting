@@ -30,7 +30,7 @@ export default function App() {
               {es.isEnded && 'Ended · Results available'}
             </span>
             <span className={`status-badge ${es.isActive ? 'live' : es.isEnded ? 'ended' : 'pending'}`}>
-              {es.isActive ? '● LIVE' : es.isEnded ? '✓ ENDED' : '◌ PENDING'}
+              {es.isActive ? ' LIVE' : es.isEnded ? ' ENDED' : ' PENDING'}
             </span>
           </div>
         )}

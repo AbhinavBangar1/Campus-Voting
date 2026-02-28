@@ -72,8 +72,6 @@ export default function AdminPanel() {
           <span className="live-badge">● LIVE — Election #{es.electionId}</span>
         )}
       </div>
-
-      {/* Sub-tabs */}
       <div className="sub-tabs">
         <button className={`sub-tab ${subTab === 'election' ? 'active' : ''}`} onClick={() => setSubTab('election')}>
           Election Setup
@@ -82,11 +80,8 @@ export default function AdminPanel() {
           Ballot Posts {es?.postCount > 0 && <span className="sub-badge">{es.postCount}</span>}
         </button>
       </div>
-
-      {/* ── ELECTION TAB ── */}
       {subTab === 'election' && (
         <>
-          {/* Current status */}
           {es?.hasElection && (
             <div className="status-card">
               <div className="status-row">
@@ -113,8 +108,6 @@ export default function AdminPanel() {
               </div>
             </div>
           )}
-
-          {/* Stop election */}
           {canStop && (
             <div className="form-card danger-zone">
               <h3 className="form-title">Danger Zone</h3>
@@ -122,12 +115,10 @@ export default function AdminPanel() {
                 Stop the current election immediately. Voting will be closed and results will become available.
               </p>
               <button className="btn-danger" onClick={handleStopElection} disabled={loading}>
-                ⬛ Stop Election Now
+                Stop Election Now
               </button>
             </div>
           )}
-
-          {/* Start new election */}
           {canStart && (
             <form className="form-card" onSubmit={handleStartElection}>
               <h3 className="form-title">
@@ -175,8 +166,6 @@ export default function AdminPanel() {
           )}
         </>
       )}
-
-      {/* ── POSTS TAB ── */}
       {subTab === 'posts' && (
         <>
           {!es?.hasElection && (
@@ -187,7 +176,6 @@ export default function AdminPanel() {
 
           {es?.hasElection && (
             <>
-              {/* Add post form — always shown when in pending state */}
               {canAddPost ? (
                 <form className="form-card" onSubmit={handleAddPost}>
                   <h3 className="form-title">Add New Post / Position</h3>
@@ -217,8 +205,6 @@ export default function AdminPanel() {
                       You can name them in the voter-facing ballot later.
                     </span>
                   </div>
-
-                  {/* Candidate name preview */}
                   <div className="candidate-preview">
                     {Array.from({ length: candidateCount }, (_, i) => (
                       <div className="candidate-preview-row" key={i}>
@@ -227,7 +213,6 @@ export default function AdminPanel() {
                       </div>
                     ))}
                   </div>
-
                   <button className="btn-secondary" type="submit" disabled={loading}>
                     {loading ? 'Adding…' : '+ Add Post'}
                   </button>
@@ -236,19 +221,17 @@ export default function AdminPanel() {
                 <div className="form-card">
                   {es?.isActive && (
                     <div className="alert alert-warn">
-                      ⚠ Posts cannot be added while voting is live.
+                      Posts cannot be added while voting is live.
                       Stop the election first or wait until it ends.
                     </div>
                   )}
                   {es?.isEnded && (
                     <div className="alert alert-warn">
-                      ⚠ This election has ended. Start a new election to add posts.
+                      This election has ended. Start a new election to add posts.
                     </div>
                   )}
                 </div>
               )}
-
-              {/* Posts list */}
               {es?.posts?.length > 0 ? (
                 <div className="form-card">
                   <h3 className="form-title">Configured Posts</h3>

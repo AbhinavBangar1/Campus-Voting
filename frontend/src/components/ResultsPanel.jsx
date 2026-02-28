@@ -35,7 +35,6 @@ export default function ResultsPanel() {
   return (
     <div className="panel">
       <div className="panel-header">
-        <span className="panel-icon">📊</span>
         <h2>Results</h2>
         {canView && (
           <button className="btn-ghost sm" onClick={fetchResults} disabled={fetching}>

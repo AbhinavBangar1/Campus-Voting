@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { useWeb3 } from '../context/Web3Context'
 
-// ── Non-admin voter view ─────────────────────────────────────────────
 function VoterBallot() {
   const { electionState, selectedAccount, enqueueBallot, checkVoterStatus, loading } = useWeb3()
 
@@ -32,7 +31,7 @@ function VoterBallot() {
     return (
       <div className="form-card">
         <div className="alert alert-warn" style={{ marginBottom: 0 }}>
-          ⚠ Your wallet <code>{selectedAccount.slice(0, 10)}…</code> has already voted in this election.
+          Your wallet <code>{selectedAccount.slice(0, 10)}…</code> has already voted in this election.
         </div>
       </div>
     )
@@ -123,7 +122,7 @@ function VoterBallot() {
           <div className="ballot-actions">
             <button className="btn-ghost" onClick={() => setStep('ballot')}>← Edit</button>
             <button className="btn-danger" onClick={handleSubmit} disabled={loading}>
-              {loading ? 'Submitting…' : '⬡ Submit Ballot'}
+              {loading ? 'Submitting…' : 'Submit Ballot'}
             </button>
           </div>
         </div>
@@ -132,11 +131,10 @@ function VoterBallot() {
   )
 }
 
-// ── Admin voter-on-behalf view ───────────────────────────────────────
 function AdminBallotStation() {
   const { electionState, eligibleVoters, enqueueBallot, loading } = useWeb3()
 
-  const [step, setStep]                   = useState('select') // 'select' | 'ballot' | 'confirm' | 'done'
+  const [step, setStep]                   = useState('select')
   const [selectedVoter, setSelectedVoter] = useState(null)
   const [selections, setSelections]       = useState({})
   const [search, setSearch]               = useState('')
@@ -175,7 +173,6 @@ function AdminBallotStation() {
 
   return (
     <>
-      {/* Step indicator */}
       <div className="step-bar">
         {['Select Voter', 'Fill Ballot', 'Confirm'].map((label, i) => {
           const idx = ['select', 'ballot', 'confirm'].indexOf(step)
@@ -195,7 +192,7 @@ function AdminBallotStation() {
           <h3 className="form-title">Select Voter from Registry</h3>
           {eligibleNow.length === 0 ? (
             <div className="alert alert-warn">
-              No eligible voters. Register voters in the 👥 Voters tab first.
+              No eligible voters. Register voters in the Voters tab first.
             </div>
           ) : (
             <>
@@ -230,7 +227,6 @@ function AdminBallotStation() {
         </div>
       )}
 
-      {/* Step 2 — ballot */}
       {step === 'ballot' && (
         <div className="form-card">
           <div className="ballot-voter-chip" style={{ marginBottom: '1.25rem' }}>
@@ -275,7 +271,6 @@ function AdminBallotStation() {
         </div>
       )}
 
-      {/* Step 3 — confirm */}
       {step === 'confirm' && (
         <div className="form-card">
           <h3 className="form-title">Confirm & Queue</h3>
@@ -294,7 +289,7 @@ function AdminBallotStation() {
           <div className="ballot-actions">
             <button className="btn-ghost" onClick={() => setStep('ballot')}>← Edit</button>
             <button className="btn-danger" onClick={handleSubmit} disabled={loading}>
-              {loading ? 'Processing…' : '📋 Add to Queue'}
+              {loading ? 'Processing…' : 'Add to Queue'}
             </button>
           </div>
         </div>
@@ -303,16 +298,13 @@ function AdminBallotStation() {
   )
 }
 
-// ── Main VotingStation ───────────────────────────────────────────────
 export default function VotingStation() {
   const { electionState, isAdmin } = useWeb3()
   const es = electionState
-
   if (!es?.isActive) {
     return (
       <div className="panel">
         <div className="panel-header">
-          <span className="panel-icon">🗳</span>
           <h2>Voting Station</h2>
         </div>
         <div className="status-card center">
@@ -332,9 +324,8 @@ export default function VotingStation() {
   return (
     <div className="panel">
       <div className="panel-header">
-        <span className="panel-icon">🗳</span>
         <h2>Voting Station</h2>
-        <span className="live-badge">● LIVE</span>
+        <span className="live-badge">LIVE</span>
         {isAdmin && <span className="admin-mode-badge">Admin Mode</span>}
       </div>
 
